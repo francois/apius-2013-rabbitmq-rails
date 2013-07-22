@@ -5,7 +5,8 @@ class User < ActiveRecord::Base
   ALLOWED_TYPES = %w(jpg gif png)
 
   def avatar_type
-    type = File.extname(avatar_identifier).sub("jpeg", "jpg")[1..-1]
-    raise "unknown avatar content type: #{avatar_identifier.inspect} (#{type.inspect})" unless ALLOWED_TYPES.include?(type)
+    File.extname(avatar_identifier).sub("jpeg", "jpg")[1..-1].tap do |type|
+      raise "Unknown avatar content type: #{avatar_identifier.inspect} (#{type.inspect})" unless ALLOWED_TYPES.include?(type)
+    end
   end
 end

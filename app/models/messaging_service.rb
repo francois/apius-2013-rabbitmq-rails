@@ -6,7 +6,9 @@ class MessagingService
 
   def publish_image_resize_request_task(image_url, type)
     payload    = { image_url: image_url }.to_json
-    properties = { routing_key: type }
+    properties = { routing_key: type, content_type: "application/json" }
+
+    Rails.logger.info "Resizing #{image_url}, type: #{type.inspect}"
     image_resize_task_exchange.publish( payload,  properties)
   end
 

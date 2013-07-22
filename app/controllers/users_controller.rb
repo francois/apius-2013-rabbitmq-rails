@@ -44,8 +44,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        image_url = "#{request.scheme}://#{request.host}:#{request.port}#{@user.avatar_url}"
         messaging_service.publish_image_resize_request_task(
-          @user.avatar_url, @user.avatar_type )
+          image_url, @user.avatar_type )
 
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
